@@ -23,7 +23,7 @@ void Value(void)
 {
    loop:
    int DevID,IdxID;
-   char IdxVal[12];
+   char IdxVal[5];
    printf("Enter the device ID\n");
    scanf("%d",&DevID);
    printf("Enter the index ID\n");
