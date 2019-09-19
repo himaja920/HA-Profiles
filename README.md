@@ -18,6 +18,11 @@ Build an application with libAlmondHA which should do the following actions. lib
 
 
 
+Completed tasks:
+
+
+
+
 Free2 client is initialized using HADevices::initializeFree2();  /// 
 
 Calling SetValue API (Can be set only for certain devices)       ///
