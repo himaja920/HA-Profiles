@@ -47,7 +47,7 @@ void ImageCountOnTouch(void);
 void ResolutionOnTouch(void);
 void btndeativeOnTouch(void);
 extern int roundfun(float num);
-void getdevicelist(void);
+void LIST(void);
 void Value(void);
 
 
@@ -233,36 +233,79 @@ void getBatteryVal(void) {
 }*/
 bool a = false;
 
+
 int main(int argc, char** argv) {
+    
     logger = Logger::getInstance();
     char logfile[100] = "/tmp/connected_home.log";
     logger->setFileName(logfile);
     logger->setMethod(Logger::ALL, Logger::LOGFILE);
     LOG(Logger::INFO, "<===============================Connected_home started ==============================>");
     for(int i=0;i<argc;i++)
-    printf("%s\n",argv[i]);
-    init();
+     printf("%s\n",argv[i]);
+     
+     init();
+  
+     Device d(contDevID);
+     
+     //d.setAlmondBlinkOnOff(true,1);
+
     //connectedHome_init();
     //connectedHome_draw();
 
+    
     HADevices::initializeFree2();
 
-    dL.Populate();
- list <Device> devices;
- list <Device>::iterator iterator;
 
-    for (iterator = dL.devices.begin(); iterator != dL.devices.end(); ++iterator){
-           printf("%s",*iterator);  }
+    LIST();
+    
     HADevices::genericCallback(&theCallback);
-    HADevices::eventCallback(&theEventCallback);
+    HADevices::eventCallback(&theEventCallback); 
+   
+  
     setTouchHandler(tH);
     libTouchInit();
+    
+    //getdevicelist();
+    
     Value();
     a = true;
     while (1) {
   pause;
+        
     }
+    
     return 0;
+}
+void LIST(void)
+{
+	int cnt =0 ,d_devid;
+        for (list <Device>::iterator iterator = dL.devices.begin(); (iterator != dL.devices.end()) && (cnt < 250); ++iterator) {
+        devIdList[cnt++] = (*iterator).getID();
+        d_devid = (*iterator).getID();
+        cout<<"Device ID : "<<d_devid<<endl;
+        cout<<"Device Name: "<<(*iterator).getDeviceName()<<endl;
+        cout<<"Device Location : "<<(*iterator).getDeviceLocation()<<endl;
+        cout<<"Device Type :"<<(*iterator).getDeviceType()<<endl;
+        cout<<"Device Technology : "<<(*iterator).getDeviceTechnology()<<endl;
+        cout<<"Bulb ID   : "<<(*iterator).getbulbid()<<endl;
+        cout<<"Friend Device : "<<(*iterator).getFriendlyDeviceType()<<endl;
+        cout<<"OZWNode : "<<(*iterator).getOZWNode()<<endl;
+        cout<<"ZigBeeShortID : 0x"<<(*iterator).getShortID()<<endl;
+        cout<<"ZigBeeEUI64 : "<<(*iterator).getZigBeeEUI64()<<endl;
+        cout<<"Association Timestamp : "<<(*iterator).getAssociationTimeStamp()<<endl;
+        cout<<"Manufacturername : "<<(*iterator).getManufacturername()<<endl;;
+        cout<<"Version : "<<(*iterator).getVersion()<<endl;
+        cout<<"Model ID : "<<(*iterator).getModelid()<<endl;
+        cout<<"Value Count : "<<(*iterator).getValueCount()<<endl;
+        int i=0;
+        for(i = 0;i<=(*iterator).getValueCount();++i)
+        { 
+          cout<<"Index = "<<i<<"\t"<<"Endpoint = "<<(*iterator).getEndPoint(i)<<"\t"<<"Value = "<<(*iterator).getValue(i)<<"\t"<<"Name : "<<(*iterator).getValueName(i)<<endl;
+         }
+        cout<<"---------------------------------------------------"<<endl;
+        cout<<"---------------------------------------------------"<<endl;  
+     }
 }
 
 
