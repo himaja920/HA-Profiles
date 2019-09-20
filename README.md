@@ -27,7 +27,7 @@ Free2 client is initialized using HADevices::initializeFree2();  ///
 
 Printing Devices List                                            ///
 
-Registering call back events                                     ///
+Registering call back events and device notifications            ///
 
 Calling SetValue API (Can be set only for certain devices)       ///
 
