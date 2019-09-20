@@ -242,39 +242,19 @@ int main(int argc, char** argv) {
     logger->setMethod(Logger::ALL, Logger::LOGFILE);
     LOG(Logger::INFO, "<===============================Connected_home started ==============================>");
     for(int i=0;i<argc;i++)
-     printf("%s\n",argv[i]);
-     
-     init();
-  
-     Device d(contDevID);
-     
-     //d.setAlmondBlinkOnOff(true,1);
-
-    //connectedHome_init();
-    //connectedHome_draw();
-
-    
+    printf("%s\n",argv[i]);
+    init()    
     HADevices::initializeFree2();
-
-
     LIST();
-    
     HADevices::genericCallback(&theCallback);
     HADevices::eventCallback(&theEventCallback); 
-   
-  
     setTouchHandler(tH);
     libTouchInit();
-    
-    //getdevicelist();
-    
     Value();
     a = true;
     while (1) {
-  pause;
-        
-    }
-    
+       pause;
+    } 
     return 0;
 }
 void LIST(void)
