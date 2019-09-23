@@ -243,13 +243,13 @@ int main(int argc, char** argv) {
     LOG(Logger::INFO, "<===============================Connected_home started ==============================>");
     for(int i=0;i<argc;i++)
     printf("%s\n",argv[i]);
-    init()    
-    HADevices::initializeFree2();
-    LIST();
+    init();	
+    HADevices::initialize();
     HADevices::genericCallback(&theCallback);
-    HADevices::eventCallback(&theEventCallback); 
+    HADevices::eventCallback(&theEventCallback);
     setTouchHandler(tH);
     libTouchInit();
+    LIST();
     Value();
     a = true;
     while (1) {
@@ -303,6 +303,7 @@ void Value(void)
    getDevice(DevID);
    Device d(DevID);
    d.setValue(IdxID,IdxVal);
+   HADevices::genericCallback(&theCallback);
    goto loop;
 }
 
@@ -7535,6 +7536,7 @@ void theEventCallback(Event * e) {
 }
 
 void theCallback(Device * notifiedDevice) {
+	 cout<<"\n\n\nto the callback\n\n\n";
     for (list <Device>::iterator iterator = dL.devices.begin(); iterator != dL.devices.end(); ++iterator) {
         if ((*iterator).getID() == notifiedDevice->getID()) {
             (*iterator).RefreshDevice();
