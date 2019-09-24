@@ -92,34 +92,25 @@ int main(int argc, char** argv) {
     HADevices::initialize();
     HADevices::genericCallback(&theCallback);
     HADevices::eventCallback(&theEventCallback);
-    //setTouchHandler(tH);
     libTouchInit();
     LIST();
     Value();
     a = true;
     while (1) {
-  pause;
-        
-    }
-    
+  pause;        
+    }  
     return 0;
 }
   
 void LIST(void)
 {
-
-   int cnt =0 ,d_devid;
-
-  for (list <Device>::iterator iterator = dL.devices.begin(); (iterator != dL.devices.end()) && (cnt < 250); ++iterator) {
-       
+       int cnt =0 ,d_devid;
+        for (list <Device>::iterator iterator = dL.devices.begin(); (iterator != dL.devices.end()) && (cnt < 250); ++iterator) {
         devIdList[cnt++] = (*iterator).getID();
         d_devid = (*iterator).getID();
         cout<<"Device ID : "<<d_devid<<endl;
         cout<<"Device Name: "<<(*iterator).getDeviceName()<<endl;
         cout<<"Device Location : "<<(*iterator).getDeviceLocation()<<endl;
-        //DevtypeEnumToStr(enum DevType Type, char* DeviceType)
-       
-        //cout<<"Device Type :"<<(*iterator).getDeviceType()<<endl;
         cout<<"Device Technology : "<<((*iterator).getDeviceTechnology())<<endl;
         cout<<"Bulb ID   : "<<(*iterator).getbulbid()<<endl;
         cout<<"Friend Device : "<<(*iterator).getFriendlyDeviceType()<<endl;
@@ -131,22 +122,15 @@ void LIST(void)
         cout<<"Version : "<<(*iterator).getVersion()<<endl;
         cout<<"Model ID : "<<(*iterator).getModelid()<<endl;
         cout<<"Value Count : "<<(*iterator).getValueCount()<<endl;
-        
- 
-     int i=0;
- for(i = 0;i<=(*iterator).getValueCount();++i)
-{ 
-    cout<<"Index = "<<i<<"\t"<<"Endpoint = "<<(*iterator).getEndPoint(i)<<"\t"<<"Value = "<<(*iterator).getValue(i)<<"\t"<<"Type : "<<(*iterator).getIndexType(i)<<"\t"<<"Name : "<<(*iterator).getValueName(i)<<endl;
-    }
-        
+        int i=0;
+        for(i = 0;i<=(*iterator).getValueCount();++i)
+        { 
+           cout<<"Index = "<<i<<"\t"<<"Endpoint = "<<(*iterator).getEndPoint(i)<<"\t"<<"Value = "<<(*iterator).getValue(i)<<"\t"<<"Type : "<<(*iterator).getIndexType(i)<<"\t"<<"Name : "<<(*iterator).getValueName(i)<<endl;
+        }
         cout<<"---------------------------------------------------"<<endl;
         cout<<"---------------------------------------------------"<<endl;  
      }
 }
-
-
-
-
 void Value(void)
 {
    loop:
@@ -157,16 +141,12 @@ void Value(void)
    printf("Enter the index ID\n");
    scanf("%d",&IdxID);
    printf("Enter the index Value\n");
-   scanf("%s",IdxVal);
-   
+   scanf("%s",IdxVal);  
    Device d(DevID);
    d.setValue(IdxID,IdxVal);
    HADevices::genericCallback(&theCallback);
    goto loop;
 }
-
-
-
 void draw(void) {
 
 }
@@ -184,10 +164,7 @@ void backOnTouch(void) {
     } else {
         curPage--;
         lcd_clear(BACKGROUND_LAYER);
-        //connectedHome_draw();
-    }
-
-
+ }
 }
     void init(void) {
 
@@ -327,11 +304,9 @@ void checkRadioButtonState(int Selected, int section) {
                         for (list <Device>::iterator iterator = dL.devices.begin(); (iterator != dL.devices.end()) && (cnt < 250); ++iterator) {
                             devIdList[cnt++] = (*iterator).getID();
                         }
-                        //connectedHome_draw();
                     }
                     if (MODE == LIST_MODE) {
-                        //sleep(10);
-                        //connectedHome_draw();
+                        //sleep(10)
                     }
                 } catch (int i) {
                     char buf[100] = "";
@@ -357,7 +332,6 @@ void checkRadioButtonState(int Selected, int section) {
                         }
                         if (contDevID == DevicePacket.DevId) {
                             MODE = LIST_MODE;
-                            //connectedHome_draw();
                         }
                         break;
                     }
@@ -368,7 +342,6 @@ void checkRadioButtonState(int Selected, int section) {
             {
                 LOG(Logger::PRINT, "Received DeviceRemoveAll event");
                 dL.devices.clear();
-                //connectedHome_draw();
             }
                 break;
             case DeviceUpdated:
@@ -395,12 +368,10 @@ void checkRadioButtonState(int Selected, int section) {
                             }
                         } else if (MODE == LIST_MODE) {
                             if (dL.devices.size() <= 12) {
-                               // connectedHome_draw();
                             } else {
                                 for (int i = 0; i < dL.devices.size(); i++) {
                                     if (devIdList[i] == DevicePacket.DevId) {
-                                        if ((i / 11) == curPage) {
-                                            //connectedHome_draw();
+                                        if ((i / 11) == curPage) 
                                             break;
                                         }
                                     }
@@ -548,7 +519,6 @@ void theCallback(Device * notifiedDevice) {
                 
                 case BinarySensor:
                 {
-                   printf("DoorSensor\n\n\n\n");
                     if (MODE != DEVICE_MODE) {//
                         if (notifiedDevice->getLastNotificationIndex() == 1) {
                             fillRect(80, 130, 300, 200, RR_COLOR);
@@ -556,7 +526,6 @@ void theCallback(Device * notifiedDevice) {
                                 swprintf(opt, 179, L" %ls", lan.get("true", "common"));
                             } else {
                                 swprintf(opt, 179, L" %ls", lan.get("false", "common"));
-                               cout<<"DoorClosed\n\n\n";
                             }
                             drawText(opt, NOTIFICATION_X, NOTIFICATION_Y + 20, 300, 1, 0, 35.0f, 65535, 1);
                         } else if (notifiedDevice->getLastNotificationIndex() == 2) {
@@ -582,10 +551,6 @@ void theCallback(Device * notifiedDevice) {
 
                 }
                     break; //Binary Sensor";    
-                 
-             
-               
-                
                 case Alarm:
                 {
                     if (notifiedDevice->getLastNotificationIndex() == 1) {
@@ -609,56 +574,6 @@ void theCallback(Device * notifiedDevice) {
                     }
                 }
                     break; //Alarm";
-               
-                
-                case LightSensor:
-                {
-                    switch (notifiedDevice->getIndexType(notifiedDevice->getLastNotificationIndex())) {
-                        case Temperature:
-                        {
-
-                            fillRect(190, 95, 300, 125, GREEN_COLOR);
-                            memset(opt, 0, sizeof (opt));
-                            //convertTemperature(notifiedDevice->getLastNotificationIndex(), opt);
-                            drawText(opt, 200, 100, 100, 1, 0, 20.0f, 65535, 1);
-                        }
-                            break;
-                        case Humidity:
-                        {
-                            swprintf(opt, 20, L"%4s%%    ", notifiedDevice->getLastNotificationIndexValue());
-                            drawTextWithBG(opt, 175, 160, 60, 1, 0, 20.0f, 65535, RR_COLOR, 0);
-                        }
-                            break;
-                        case Illuminance:
-                        {
-                            swprintf(opt, 20, L"%s Lux    ", notifiedDevice->getLastNotificationIndexValue());
-                            drawTextWithBG(opt, 175, 135, 70, 1, 0, 20.0f, 65535, RR_COLOR, 0);
-                        }
-                            break;
-                        case Battery:
-                        {
-                            int batteryVal;
-                            batteryVal = atoi(notifiedDevice->getLastNotificationIndexValue());
-                            pngImg.drawPNG(240, 60, 1, 0, battery_icon);
-                            if (batteryVal != 0xff && batteryVal != 0) {
-                                swprintf(opt, 5, L"%hd%%", batteryVal);
-                                drawText(opt, 245, 62, 60, 1, 0, 12.0f, RGB(0, 0, 0), 0);
-                            } else {
-                                drawText(lan.get("low", "connected_sensor"), 245, 62, 60, 1, 0, 12.0f, RGB(255, 0, 0), 0);
-                            }
-                        }
-                            break;
-                        case Tamper:
-                        {
-                            if (strcmp(notifiedDevice->getLastNotificationIndexValue(), "true") == 0) {
-                                enableTouch = true;
-                                TamperButton.draw();
-                            }
-                        }
-                    }
-                }
-                    break;
-               
                 case HueLamp:
                 {
                     Device d(contDevID);
