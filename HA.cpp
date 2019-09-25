@@ -9,9 +9,6 @@
 #include "main.h"
 #include <unicode.h>
 #include <Logger.h>
-#include <libAlmondHA_Private.h>
-#include "almond_timer.h"
-#include "almondList.h"
 #include <math.h>
 #include <bits/stdc++.h>
 using namespace std;
@@ -40,9 +37,6 @@ int sensorsCount = 17, xCount = 2, yCount = 3, pageNum, curPage = 0;
 int contDevID = -1;
 
 int  percentage;
-
-int xCoords[3] = {X_COORD_START, X_COORD_START + 150, X_COORD_START + 300};
-int yCoords[4] = {Y_COORD_START, Y_COORD_START + 60, Y_COORD_START + 120, Y_COORD_START + 180};
 int devIdList[250], MODE = LIST_MODE;
 
 bool StartLED = true, StartBlinkLED = false, StartSiren = false ;
