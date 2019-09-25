@@ -29,7 +29,9 @@ Printing Devices List                                            ///
 
 Calling SetValue API (Can be set only for certain devices)       ///
 
-Registering call back events and device notifications            ///
+Registering call back events                                     ///
 
-Turn on/Turn off LED from LCD getting updated                    ///
+Getting notifications but not what is modified                   ///
+
+Turn on/Turn off LED from LCD getting notification only not updated value                   ///
 
