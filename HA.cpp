@@ -180,9 +180,8 @@ void theEventCallback(Event * e) {
 
 
 void theCallback(Device * notifiedDevice) {
-    int cnt = 0;
     cout<<"Notification\n";
-    for (list <Device>::iterator iterator = dL.devices.begin(); iterator != dL.devices.end() && cnt < 250; ++iterator) {
+    for (list <Device>::iterator iterator = dL.devices.begin(); iterator != dL.devices.end(); ++iterator) {
         if ((*iterator).getID() == notifiedDevice->getID()) { 
        contDev = (*iterator).getDeviceType();
         switch(contDev) {            
