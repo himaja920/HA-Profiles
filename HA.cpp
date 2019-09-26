@@ -13,8 +13,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define RGB(r,g,b)              (((r&0xF8)<<8)|((g&0xFC)<<3)|((b&0xF8)>>3)) //5 red | 6 green | 5 blue
-
 void theCallback(Device* notifiedDevice);
 void theEventCallback(Event *e);
 void LIST(void);
@@ -35,7 +33,7 @@ unsigned short int  Ledhue = 0;
 int sensorsCount = 17, xCount = 2, yCount = 3, pageNum, curPage = 0;
 
 int contDevID = -1;
-int devIdList[250], MODE = LIST_MODE;
+int devIdList[250];
 bool a = false;
 
 int main(int argc, char** argv) {
@@ -185,8 +183,7 @@ void theCallback(Device * notifiedDevice) {
     int cnt = 0;
     cout<<"Notification\n";
     for (list <Device>::iterator iterator = dL.devices.begin(); iterator != dL.devices.end() && cnt < 250; ++iterator) {
-        if ((*iterator).getID() == notifiedDevice->getID()) {
-    if (  MODE == CONTROL_MODE || MODE == LIST_MODE) {  
+        if ((*iterator).getID() == notifiedDevice->getID()) { 
        contDev = (*iterator).getDeviceType();
         switch(contDev) {            
                 
@@ -206,18 +203,17 @@ void theCallback(Device * notifiedDevice) {
                 {
                     Device d(contDevID);
                     
-                    if (MODE != COLOR_MODE) {
+                   
                            if(notifiedDevice->getLastNotificationIndex() == 2){
                         if (strcmp(notifiedDevice->getLastNotificationIndexValue(), "false") == 0) {
                               cout<<(*iterator).getDeviceName()<<": "<<"Binary Swicth Off\n";
                            }
                         else{ cout<<(*iterator).getDeviceName()<<": "<<"Binary Swicth On\n";}
-          
-
-                      }}}
-                    break;
-        } 
-      } 
-    }        
-  }
-}
+                  }
+                }
+            break;
+        }
+      }
+     }
+   }        
+  
