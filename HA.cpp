@@ -35,15 +35,7 @@ unsigned short int  Ledhue = 0;
 int sensorsCount = 17, xCount = 2, yCount = 3, pageNum, curPage = 0;
 
 int contDevID = -1;
-
-int  percentage;
 int devIdList[250], MODE = LIST_MODE;
-
-bool StartLED = true, StartBlinkLED = false, StartSiren = false ;
-
-
-wchar_t opt[180];
-
 bool a = false;
 
 int main(int argc, char** argv) {
@@ -103,44 +95,24 @@ void LIST(void)
 void Value(void)
 {
    loop:
-   cout<<"Number of devices are : "<<dL.devices.size()<<"\n";
+
    int DevID,IdxID;
    char IdxVal[5];
    
    printf("Enter the device ID\n");
    scanf("%d",&DevID);
-    if (DevID > 0  && DevID <= dL.devices.size() ) {
+   if (DevID > 0  && DevID <= dL.devices.size() ) {
    printf("Enter the index ID\n");
    scanf("%d",&IdxID);
    printf("Enter the index Value\n");
-   scanf("%s",IdxVal);}
-   else{
-     cout << "Before try \n"; 
-   bool s = true;
-   while(s){
-    try { 
-        cout << "Inside try \n"; 
-      if (DevID <= 0  || DevID > dL.devices.size() ) 
-      { cout<<"No such device number exists\n before throw\n";
-         throw DevID; 
-         cout << "After throw (Never executed) \n"; 
-         
-      } 
-   } 
-   catch (int DevID ) { 
-      cout << "Exception Caught \n";
-     break;
-   } 
-  }exit(0);
-  }
-  
-   
+   scanf("%s",IdxVal);
    Device d(DevID);
    d.setValue(IdxID,IdxVal);
-  
-   
-   goto loop;
-
+   }
+   else
+     cout<<"No such Device ID exists\n";
+    
+   goto loop; 
 }
 
 void init(void) {
@@ -197,7 +169,7 @@ void theEventCallback(Event * e) {
                  list <Device>::iterator it = dL.devices.begin();
                 for (; it != dL.devices.end(); ++it) {
                     if ((*it).getID() == DevicePacket.DevId) {
-                      cout<<"Updated Device is "<<(*it).getDeviceName()<<" ,Updated location is : "<<DevicePacket.Location<<endl;}}
+                      cout<<"Updated Device is : "<<(*it).getDeviceName()<<" , Updated location is : "<<DevicePacket.Location<<endl;}}
                  }
                 break;
              case AlmondUpdated:
@@ -208,29 +180,44 @@ void theEventCallback(Event * e) {
     }
 }
 
+
 void theCallback(Device * notifiedDevice) {
-        cout<<"Notified \n";     
-  for (list <Device>::iterator iterator = dL.devices.begin(); iterator != dL.devices.end(); ++iterator) {
+    int cnt = 0;
+    cout<<"Notification\n";
+    for (list <Device>::iterator iterator = dL.devices.begin(); iterator != dL.devices.end() && cnt < 250; ++iterator) {
         if ((*iterator).getID() == notifiedDevice->getID()) {
-           cout<<"notfi\n";
-     if (notifiedDevice->getID() == contDevID) {
-            memset(opt, 0, sizeof (opt));
-            switch (contDev) {
-              cout<<"Switch\n";
-                case UnknownOnOffModule:  
-                case AlmondBlink:
+    if (  MODE == CONTROL_MODE || MODE == BLINK_COLOR_MODE || MODE == LIST_MODE) {  
+       contDev = (*iterator).getDeviceType();
+        switch(contDev) {            
+                
+       case AlmondBlink:
                 {
 
                     if ((notifiedDevice->getLastNotificationIndex() == 1) ) {
                         if (strcmp(notifiedDevice->getLastNotificationIndexValue(), "false") == 0) {
-                            // StartLED = true;
-                            cout<<"LED OFF\n";
+                            cout<<(*iterator).getDeviceName()<<" : OFF ,"<<" Updated Value is : "<<(*iterator).getLastNotificationIndexValue()<<"\n";
                         } else {
-                           // StartLED = false;
-                           cout<<"LED ON\n";
+                              cout<<(*iterator).getDeviceName()<<" : ON ,"<<" Updated Value is : "<<(*iterator).getLastNotificationIndexValue()<<"\n";
                         }
-                    } 
+                    }} 
                     break;
-     } }}
-   }         
+
+          case HueLamp:
+                {
+                    Device d(contDevID);
+                    
+                    if (MODE != COLOR_MODE) {
+                           if(notifiedDevice->getLastNotificationIndex() == 2){
+                        if (strcmp(notifiedDevice->getLastNotificationIndexValue(), "false") == 0) {
+                              cout<<(*iterator).getDeviceName()<<": "<<"Binary Swicth Off\n";
+                           }
+                        else{ cout<<(*iterator).getDeviceName()<<": "<<"Binary Swicth On\n";}
+          
+
+                      }}}
+                    break;
+        } 
+      } 
+    }        
   }
+}
