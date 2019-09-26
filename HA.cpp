@@ -186,7 +186,7 @@ void theCallback(Device * notifiedDevice) {
     cout<<"Notification\n";
     for (list <Device>::iterator iterator = dL.devices.begin(); iterator != dL.devices.end() && cnt < 250; ++iterator) {
         if ((*iterator).getID() == notifiedDevice->getID()) {
-    if (  MODE == CONTROL_MODE || MODE == BLINK_COLOR_MODE || MODE == LIST_MODE) {  
+    if (  MODE == CONTROL_MODE || MODE == LIST_MODE) {  
        contDev = (*iterator).getDeviceType();
         switch(contDev) {            
                 
